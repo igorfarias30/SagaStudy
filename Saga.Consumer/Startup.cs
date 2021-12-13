@@ -19,6 +19,7 @@ using SagaWithMassTransit.Infra.Contract;
 using SagaWithMassTransit.Infra.Gateway;
 using SagaWithMassTransit.Infra.Gateway.Email;
 using SagaWithMassTransit.Infra.Validate;
+using SagaWithMassTransit.Shared.InputModels;
 using SagaWithMassTransit.Shared.Settings;
 
 namespace Saga.Consumer
@@ -42,6 +43,15 @@ namespace Saga.Consumer
                     .AddConsumer<MessageRequestConsumerService, MessageRequestClaimSubmission>(configurator =>
                         configurator.UseFilter(new MessageValidateFilter<MessageRequestConsumerService>())
                     );
+                
+                services
+                .Configure<SmtpProviderInputModel>(options =>
+                    Configuration
+                        .GetSection("SmtpProviderInputModel")
+                        .Bind(options)
+                );
+
+                services.AddControllers();
 
                 config.UsingRabbitMq((context, rabbitConfig) =>
                 {
