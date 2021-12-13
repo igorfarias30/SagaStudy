@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  broker-local:
+    image: rabbitmq:3-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: "user"
+      RABBITMQ_DEFAULT_PASS: "saga123"
+    container_name: rabbitmq-saga
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - mensageria
+
+networks:
+  mensageria:
+    driver: bridge

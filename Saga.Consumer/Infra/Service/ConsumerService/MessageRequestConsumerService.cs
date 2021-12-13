@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SagaWithMassTransit.Domain;
+using SagaWithMassTransit.Infra.Contract;
 
 namespace Saga.Consumer.Infra.Service.ConsumerService
 {
@@ -23,6 +24,8 @@ namespace Saga.Consumer.Infra.Service.ConsumerService
             try
             {
                 _logger.LogInformation($"Start AppointmentCreateConsumerService Consume, request: {JsonConvert.SerializeObject(context.Message)}");
+                var result = await _notificationGateway.SendMail(context.Message);
+                _logger.LogInformation($"End AppointmentCreateConsumerService Consume,response:{result}");
             }
             catch (Exception e)
             { 
